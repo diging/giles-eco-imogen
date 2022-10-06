@@ -28,4 +28,5 @@ public interface Properties {
     public final static String ZOOKEEPER_SERVICE_ROOT = "zookeeper_service_root";
     
     public final static String APP_URL = "app_url";
+    public final static String NOTIFIER_ID = "imogen_notifier_id";
 }

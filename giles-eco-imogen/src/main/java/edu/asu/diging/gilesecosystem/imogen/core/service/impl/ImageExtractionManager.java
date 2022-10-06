@@ -22,14 +22,13 @@ import edu.asu.diging.gilesecosystem.imogen.config.Properties;
 import edu.asu.diging.gilesecosystem.imogen.core.service.IImageExtractionManager;
 import edu.asu.diging.gilesecosystem.imogen.core.service.IProgressManager;
 import edu.asu.diging.gilesecosystem.imogen.core.service.ProgressPhase;
-import edu.asu.diging.gilesecosystem.requests.ICompletedImageExtractionRequest;
 import edu.asu.diging.gilesecosystem.requests.ICompletedStorageRequest;
-import edu.asu.diging.gilesecosystem.requests.IImageExtractionRequest;
+import edu.asu.diging.gilesecosystem.requests.ICompletionNotificationRequest;
 import edu.asu.diging.gilesecosystem.requests.IRequestFactory;
 import edu.asu.diging.gilesecosystem.requests.PageStatus;
 import edu.asu.diging.gilesecosystem.requests.RequestStatus;
 import edu.asu.diging.gilesecosystem.requests.exceptions.MessageCreationException;
-import edu.asu.diging.gilesecosystem.requests.impl.CompletedImageExtractionRequest;
+import edu.asu.diging.gilesecosystem.requests.impl.CompletionNotificationRequest;
 import edu.asu.diging.gilesecosystem.requests.impl.PageElement;
 import edu.asu.diging.gilesecosystem.requests.kafka.IRequestProducer;
 import edu.asu.diging.gilesecosystem.septemberutil.properties.MessageType;
@@ -52,7 +51,7 @@ public class ImageExtractionManager extends AExtractionManager implements IImage
     private IFileStorageManager fileStorageManager;
 
     @Autowired
-    private IRequestFactory<ICompletedImageExtractionRequest, CompletedImageExtractionRequest> requestFactory;
+    private IRequestFactory<ICompletionNotificationRequest, CompletionNotificationRequest> requestFactory;
 
     @Autowired
     private IRequestProducer requestProducer;
@@ -70,7 +69,7 @@ public class ImageExtractionManager extends AExtractionManager implements IImage
          */
         System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
 
-        requestFactory.config(CompletedImageExtractionRequest.class);
+        requestFactory.config(CompletionNotificationRequest.class);
     }
 
     /*
@@ -151,7 +150,7 @@ public class ImageExtractionManager extends AExtractionManager implements IImage
         }
 
         progressManager.setPhase(ProgressPhase.WIND_DOWN);
-        ICompletedImageExtractionRequest completedRequest = null;
+        ICompletionNotificationRequest completedRequest = null;
         try {
             completedRequest = requestFactory.createRequest(request.getRequestId(), request.getUploadId());
         } catch (InstantiationException | IllegalAccessException e) {
@@ -160,6 +159,8 @@ public class ImageExtractionManager extends AExtractionManager implements IImage
         }
 
         completedRequest.setDocumentId(request.getDocumentId());
+        completedRequest.setFileId(request.getFileId());
+        completedRequest.setNotifier(propertiesManager.getProperty(Properties.NOTIFIER_ID));
         completedRequest.setStatus(status);
         completedRequest.setExtractionDate(OffsetDateTime.now(ZoneId.of("UTC")).toString());
         completedRequest.setPages(pages);
