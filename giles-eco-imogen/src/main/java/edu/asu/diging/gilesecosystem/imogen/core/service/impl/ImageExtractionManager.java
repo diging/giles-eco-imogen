@@ -139,6 +139,8 @@ public class ImageExtractionManager extends AExtractionManager implements IImage
                     requestPage.setErrorMsg(e.getMessage());
                 }
 
+                // this needs to be reset for every page
+                processor.resetFilenames();
                 pages.add(requestPage);
             }
             

@@ -37,6 +37,10 @@ public class PdfProcessor extends PDFStreamEngine {
         // TODO Auto-generated method stub
         super.processPage(page);
     }
+    
+    public void resetFilenames() {
+        imageFilenames = new ArrayList<String>();
+    }
 
     @Override
     protected void processOperator(Operator operator, List<COSBase> operands)
