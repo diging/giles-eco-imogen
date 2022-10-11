@@ -20,6 +20,11 @@
 
         <admin.password>$2a$04$oQo44vqcDIFRoYKiAXoNheurzkwX9dcNmowvTX/hsWuBMwijqn44i</admin.password>
         
+        <tomcat.deploy.path></tomcat.deploy.path>
+        <tomcat.app.name>carolus</tomcat.app.name>
+        <tomcat.server.id>TomcatServer</tomcat.server.id>
+
+        
         <db.driver>com.mysql.jdbc.Driver</db.driver>
         <db.database.url>jdbc-url-to-db</db.database.url>
         <db.user>db-user</db.user>
@@ -339,6 +344,16 @@
                 </configuration>
             </plugin>
         </plugins>
+        <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.2</version>
+            <configuration>
+                <url>${tomcat.deploy.path}</url>
+                <server>${tomcat.server.id}</server>
+                <path>/${tomcat.app.name}</path>
+            </configuration>
+        </plugin>
     </build>
   
 </project>
