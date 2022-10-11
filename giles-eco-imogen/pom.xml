@@ -12,7 +12,7 @@
         <spring-security-version>5.1.5.RELEASE</spring-security-version>
         <spring-data.version>Lovelace-RELEASE</spring-data.version>
         <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
-        <geco.requests.version>0.10-SNAPSHOT</geco.requests.version>
+        <geco.requests.version>0.13</geco.requests.version>
         <geco.util.version>0.6</geco.util.version>
         <geco.september.util.version>0.3</geco.september.util.version>
         <geco.kafka-util.version>0.2</geco.kafka-util.version>
