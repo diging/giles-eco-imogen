@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -67,7 +68,7 @@ public class ImageExtractionManager extends AExtractionManager implements IImage
          * slow performance in color operations. Solution: disable LittleCMS in favour
          * of the old KCMS (Kodak Color Management System)"
          */
-        System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
+        //System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
 
         requestFactory.config(CompletionNotificationRequest.class);
     }
@@ -86,8 +87,7 @@ public class ImageExtractionManager extends AExtractionManager implements IImage
         PDDocument pdfDocument = null;
         RequestStatus status = RequestStatus.COMPLETE;
         try {
-            pdfDocument = PDDocument.load(new ByteArrayInputStream(downloadFile(request.getDownloadUrl())),
-                    MemoryUsageSetting.setupTempFileOnly());
+            pdfDocument = Loader.loadPDF(new ByteArrayInputStream(downloadFile(request.getDownloadUrl())));
         } catch (IOException e) {
             messageHandler.handleMessage("Could not extract text.", e, MessageType.ERROR);
             status = RequestStatus.FAILED;
